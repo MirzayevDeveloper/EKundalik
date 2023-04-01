@@ -64,12 +64,33 @@ namespace EKundalik.Brokers.Storages
 
         public IQueryable<T> SelectAll<T>(string tableName)
         {
-            throw new NotImplementedException();
+            using (var connection = new NpgsqlConnection(this.connectionString))
+            {
+                string query = $"select * from {tableName}";
+                IQueryable<T> item = connection.Query<T>(query).AsQueryable<T>();
+
+                return item;
+            }
         }
 
-        public ValueTask<T> UpdateAsync<T>(T @object, string tableName)
+        public async ValueTask<T> UpdateAsync<T>(T @object, string tableName)
         {
-            throw new NotImplementedException();
+            using (IDbConnection db = new NpgsqlConnection(connectionString))
+            {
+                string sqlQuery = $"UPDATE {tableName} SET ";
+                var propertyNames = typeof(T).GetProperties().Where(p => p.Name != "Id");
+
+                foreach (var property in propertyNames)
+                {
+                    sqlQuery += $"{property.Name} = @{property.Name}, ";
+                }
+                sqlQuery = sqlQuery.Remove(sqlQuery.Length - 2);
+                sqlQuery += " WHERE Id = @Id";
+
+                int rowsAffected = db.Execute(sqlQuery, @object);
+
+                return rowsAffected > 0 ? @object : default;
+            }
         }
 
         public ValueTask<T> DeleteAsync<T>(T @object, string tableName)
@@ -77,13 +98,13 @@ namespace EKundalik.Brokers.Storages
             throw new NotImplementedException();
         }
 
-        public async ValueTask<T> SelectObjectByUserName<T>(string userName, string tableName)
+        public async ValueTask<T> SelectObjectByUserName<T>(string username, string tableName)
         {
             using (var connection = new NpgsqlConnection(this.connectionString))
             {
-                string query = $"select * from {tableName} where user_name = @{userName}";
+                string query = $"SELECT * FROM {tableName} WHERE username = @UserName";
 
-                var isHave = connection.QueryFirstOrDefault<T>(query, new { UserName = userName });
+                T isHave = await connection.QueryFirstOrDefaultAsync<T>(query, new { UserName = username.ToLower() });
 
                 return isHave;
             }
@@ -112,6 +133,7 @@ namespace EKundalik.Brokers.Storages
                 }
             }
         }
+
         private void CreateTablesIfNorExists()
         {
             using (var connection = new NpgsqlConnection(this.connectionString))

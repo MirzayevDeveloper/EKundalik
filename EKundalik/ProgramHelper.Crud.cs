@@ -3,6 +3,8 @@
 // --------------------------------------------------------
 
 using System;
+using System.Linq;
+using System.Reflection;
 using EKundalik.Models.Students;
 
 namespace EKundalik
@@ -22,6 +24,7 @@ namespace EKundalik
                 string choose = Console.ReadLine();
                 int choice;
                 int.TryParse(choose, out choice);
+                
 
                 switch (choice)
                 {
@@ -31,21 +34,44 @@ namespace EKundalik
                         break;
                     case 2:
                         Select(name);
+                        Pause();
                         break;
                     case 3:
                         break;
                     case 4:
                         break;
                     case 5:
+                        SelectAll(this.studentService.RetrieveAllStudents());
                         break;
                     case 6:
                         AddRandomStudent();
                         break;
                 }
+                Pause();
             }
         }
 
-        public async void Select(string name)
+        public void SelectAll<T>(IQueryable<T> list)
+        {
+            foreach (var item in list)
+            {
+                PrintObjectProperties(item);
+                Console.WriteLine();
+            }
+        }
+
+        private void PrintObjectProperties(object obj)
+        {
+            Type type = obj.GetType();
+            PropertyInfo[] properties = type.GetProperties();
+
+            foreach (PropertyInfo property in properties)
+            {
+                object value = property.GetValue(obj);
+                Console.WriteLine($"{property.Name}: {value}");
+            }
+        }
+        private async void Select(string name)
         {
             Console.Write("Enter userName: ");
             string userName = Console.ReadLine();
@@ -55,14 +81,14 @@ namespace EKundalik
 
             if (maybe is not null)
             {
+                Console.Clear();
                 await Console.Out.WriteLineAsync($"Id: {maybe.Id}\n" +
                     $"Full name: {maybe.FullName}\nUsername: {maybe.UserName}\n" +
                     $"Birth date: {maybe.BirthDate}\nGender: {maybe.Gender}");
             }
             Pause();
         }
-
-        public async void Create(string name)
+        private async void Create(string name)
         {
             switch (name.ToLower())
             {
@@ -111,8 +137,7 @@ namespace EKundalik
                     break;
             }
         }
-
-        public void AddRandomStudent()
+        private void AddRandomStudent()
         {
             Console.Write("nechta student qushmoqchisiz: ");
             string count = Console.ReadLine();

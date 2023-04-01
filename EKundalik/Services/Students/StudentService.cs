@@ -3,6 +3,7 @@
 // --------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EKundalik.Brokers.Storages;
 using EKundalik.Models.Students;
@@ -48,5 +49,10 @@ namespace EKundalik.Services.Students
 
             return maybeStudent;
         });
+
+        public IQueryable<Student> RetrieveAllStudents() =>
+            this.storageBroker.SelectAllStudents();
+
+
     }
 }

@@ -3,6 +3,7 @@
 // --------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EKundalik.Models.Students;
 
@@ -13,5 +14,6 @@ namespace EKundalik.Services.Students
         ValueTask<Student> AddStudentAsync(Student student);
         ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId);
         ValueTask<Student> RetrieveStudentByUserName(string userName);
+        IQueryable<Student> RetrieveAllStudents();
     }
 }

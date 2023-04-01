@@ -3,6 +3,7 @@
 // --------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EKundalik.Models.Students;
 
@@ -23,7 +24,13 @@ namespace EKundalik.Brokers.Storages
         public async ValueTask<Student> SelectStudentByIdAsync(Guid id) =>
             await this.SelectByIdAsync<Student>(id, studentTable);
 
-        public ValueTask<Student> SelectStudentByUserNameAsync(string userName) =>
-            SelectObjectByUserName<Student>(userName, studentTable);
+        public async ValueTask<Student> SelectStudentByUserNameAsync(string userName) =>
+            await SelectObjectByUserName<Student>(userName, studentTable);
+
+        public IQueryable<Student> SelectAllStudents() =>
+            SelectAll<Student>(studentTable);
+
+        public async ValueTask<Student> UpdateStudentAsync(Student student) =>
+            await UpdateAsync<Student>(student, studentTable);
     }
 }

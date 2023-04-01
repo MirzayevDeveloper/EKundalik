@@ -42,7 +42,7 @@ namespace EKundalik
                 switch (choice)
                 {
                     case 1:
-                        CrudMenuAsync("student");
+                        CrudMenuAsync("Student");
                         break;
                     case 2:
                         break;
