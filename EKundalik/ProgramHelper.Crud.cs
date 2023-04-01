@@ -30,6 +30,7 @@ namespace EKundalik
                         Pause();
                         break;
                     case 2:
+                        Select(name);
                         break;
                     case 3:
                         break;
@@ -38,9 +39,30 @@ namespace EKundalik
                     case 5:
                         break;
                     case 6:
+                        AddRandomStudent();
                         break;
                 }
             }
+        }
+
+        public async void Select(string name)
+        {
+            Console.Write("Enter userName: ");
+            string userName = Console.ReadLine();
+
+            var student = new Student() { UserName = userName };
+
+            Student maybe = await this.studentService
+                .RetrieveStudentByIdAsync(student);
+
+            if (maybe is not null)
+            {
+
+                await Console.Out.WriteLineAsync($"Id: {maybe.Id}\n" +
+                    $"Full name: {maybe.FullName}\nUsername: {maybe.UserName}\n" +
+                    $"Birth date: {maybe.BirthDate}\nGender: {maybe.Gender}");
+            }
+            Pause();
         }
 
         public async void Create(string name)
@@ -91,6 +113,19 @@ namespace EKundalik
                 case "grade":
                     break;
             }
+        }
+
+        public void AddRandomStudent()
+        {
+            Console.Write("nechta student qushmoqchisiz: ");
+            string count = Console.ReadLine();
+
+            int choice;
+            int.TryParse(count, out choice);
+
+            if (choice is 0) return;
+
+            AddStudent(choice);
         }
     }
 }

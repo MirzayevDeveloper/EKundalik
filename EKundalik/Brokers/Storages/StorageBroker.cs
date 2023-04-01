@@ -9,9 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using EKundalik.Models.Students;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using static Dapper.SqlMapper;
 
 namespace EKundalik.Brokers.Storages
@@ -50,21 +50,13 @@ namespace EKundalik.Brokers.Storages
         }
 
 
-        public async ValueTask<T> SelectByIdAsync<T>(Guid id, string tableName, T @object, string idColumnName = "id", string secondOption = "")
+        public async ValueTask<T> SelectByIdAsync<T>(Guid id, string tableName, string idColumnName = "id")
         {
-            using (var connection = new NpgsqlConnection(this.connectionString))
+            await using (var connection = new NpgsqlConnection(this.connectionString))
             {
-                string query;
-                if(id != default)
-                {
-                    query = $"Select * from {tableName} where {idColumnName} = {id}";
-                }
-                else
-                {
-                    query = $"Select * from {tableName} where {idColumnName} = {secondOption}";
-                }
+                string query = $"select * from {tableName} where {idColumnName} = @{id}";
 
-                T isHave = connection.QuerySingle<T>(query, @object);
+                var isHave = connection.QueryFirstOrDefault<T>(query, new { Id = id });
 
                 return isHave;
             }
@@ -85,69 +77,14 @@ namespace EKundalik.Brokers.Storages
             throw new NotImplementedException();
         }
 
-
-        public void CreateTable<T>()
+        public async ValueTask<T> SelectObjectByUserName<T>(string userName, string tableName)
         {
-            var tableName = GetTableName<T>();
-            var columns = GetColumn<T>();
 
-            using (IDbConnection connection = new NpgsqlConnection(this.connectionString))
-            {
-                connection.Execute($"CREATE TABLE IF NOT EXISTS {tableName} ({columns});");
-            }
         }
-        private string GetColumn<T>()
-        {
-            var properties = typeof(T).GetProperties();
-            var column = new List<string>();
 
-            foreach (var property in properties)
-            {
-                var columnName = property.Name.ToLower();
-                var columnType = GetColumnType(property.PropertyType);
-
-                var columnDef = $"{columnName} {columnType}";
-                column.Add(columnDef);
-            }
-
-            return string.Join(",", column);
-        }
         private string GetTableName<T>()
         {
             return typeof(T).Name.ToLower() + "s";
-        }
-        private string GetColumns<T>()
-        {
-            return string.Join(",", typeof(T).GetProperties().Select(p => p.Name));
-        }
-        private string GetValues<T>()
-        {
-            return string.Join(",", typeof(T).GetProperties().Select(p => $"@{p.Name}"));
-        }
-        private string GetColumnType(Type propertyType)
-        {
-            if (propertyType == typeof(int))
-            {
-                return "integer";
-            }
-            else if (propertyType == typeof(string))
-            {
-                return "text";
-            }
-            else if (propertyType == typeof(DateTime))
-            {
-                return "timestamp";
-            }
-            else if (propertyType == typeof(bool))
-            {
-                return "boolean";
-            }
-            else if (propertyType == typeof(Guid))
-            {
-                return "uuid";
-            }
-
-            throw new ArgumentException($"Unsupported type: {propertyType.Name}");
         }
         private void CreateDatabaseIfNotExists(string connectionString, string databaseName)
         {

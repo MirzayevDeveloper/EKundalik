@@ -3,6 +3,7 @@
 // --------------------------------------------------------
 
 using System;
+using System.Data;
 using EKundalik.Models.Students;
 using EKundalik.Models.Students.Exceptions;
 
@@ -19,6 +20,20 @@ namespace EKundalik.Services.Students
                 (Rule: IsInvalid(student.FullName), Parameter: nameof(Student.FullName)),
                 (Rule: IsInvalid(student.BirthDate), Parameter: nameof(Student.BirthDate))
                 );
+        }
+
+        public static void ValidateStudentUserName(Student student)
+        {
+            Validate(
+                (Rule: IsInvalid(student.UserName), Parameter: nameof(Student.UserName)));
+        }
+
+        public static void ValidateStorageStudent(Student maybeStudent, string userName)
+        {
+            if(maybeStudent is null)
+            {
+                throw new NotFoundStudentException(userName);
+            }
         }
 
         private static dynamic IsInvalid(DateTime dates) => new
