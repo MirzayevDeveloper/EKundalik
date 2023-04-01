@@ -50,14 +50,11 @@ namespace EKundalik
             Console.Write("Enter userName: ");
             string userName = Console.ReadLine();
 
-            var student = new Student() { UserName = userName };
-
             Student maybe = await this.studentService
-                .RetrieveStudentByIdAsync(student);
+                .RetrieveStudentByUserName(userName);
 
             if (maybe is not null)
             {
-
                 await Console.Out.WriteLineAsync($"Id: {maybe.Id}\n" +
                     $"Full name: {maybe.FullName}\nUsername: {maybe.UserName}\n" +
                     $"Birth date: {maybe.BirthDate}\nGender: {maybe.Gender}");

@@ -11,6 +11,7 @@ namespace EKundalik.Services.Students
     public interface IStudentService
     {
         ValueTask<Student> AddStudentAsync(Student student);
-        ValueTask<Student> RetrieveStudentByIdAsync(Student student, Guid studentId = default);
+        ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId);
+        ValueTask<Student> RetrieveStudentByUserName(string userName);
     }
 }

@@ -79,13 +79,16 @@ namespace EKundalik.Brokers.Storages
 
         public async ValueTask<T> SelectObjectByUserName<T>(string userName, string tableName)
         {
+            using (var connection = new NpgsqlConnection(this.connectionString))
+            {
+                string query = $"select * from {tableName} where user_name = @{userName}";
 
+                var isHave = connection.QueryFirstOrDefault<T>(query, new { UserName = userName });
+
+                return isHave;
+            }
         }
 
-        private string GetTableName<T>()
-        {
-            return typeof(T).Name.ToLower() + "s";
-        }
         private void CreateDatabaseIfNotExists(string connectionString, string databaseName)
         {
             using (var connection = new NpgsqlConnection(this.configuration.GetConnectionString("Postgres")))

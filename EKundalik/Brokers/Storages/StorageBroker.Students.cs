@@ -10,19 +10,20 @@ namespace EKundalik.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        private const string tableName = "student";
+        private const string studentTable = "student";
         public async ValueTask<Student> InsertStudentAsync(Student student)
         {
             string columns = "id, full_name, user_name, birth_date, gender";
             string values = "@Id, @FullName, @UserName, @BirthDate, @Gender";
             student.UserName = student.UserName.ToLower();
 
-            return await this.InsertAsync(student, tableName, (columns, values));
+            return await this.InsertAsync(student, studentTable, (columns, values));
         }
 
         public async ValueTask<Student> SelectStudentByIdAsync(Guid id) =>
-            await this.SelectByIdAsync<Student>(id, tableName);
+            await this.SelectByIdAsync<Student>(id, studentTable);
 
-        
+        public ValueTask<Student> SelectStudentByUserNameAsync(string userName) =>
+            SelectObjectByUserName<Student>(userName, studentTable);
     }
 }

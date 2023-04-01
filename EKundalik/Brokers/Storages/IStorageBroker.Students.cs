@@ -11,6 +11,7 @@ namespace EKundalik.Brokers.Storages
     public partial interface IStorageBroker
     {
         ValueTask<Student> InsertStudentAsync(Student student);
-        ValueTask<Student> SelectStudentByIdAsync(Student student, Guid id = default, string userName = "");
+        ValueTask<Student> SelectStudentByIdAsync(Guid id);
+        ValueTask<Student> SelectStudentByUserNameAsync(string userName);
     }
 }

@@ -11,7 +11,7 @@ namespace EKundalik.Services.Students
 {
     public partial class StudentService
     {
-        public static void ValidateStudentOnAdd(Student student)
+        private static void ValidateStudentOnAdd(Student student)
         {
             ValidateStudentIsNotNull(student);
 
@@ -22,15 +22,28 @@ namespace EKundalik.Services.Students
                 );
         }
 
-        public static void ValidateStudentUserName(Student student)
+        private static void ValidateStudentUserName(string userName)
         {
             Validate(
-                (Rule: IsInvalid(student.UserName), Parameter: nameof(Student.UserName)));
+                (Rule: IsInvalid(userName), Parameter: nameof(Student.UserName)));
         }
 
-        public static void ValidateStorageStudent(Student maybeStudent, string userName)
+        private static void ValidateStudentId(Guid id)
+        {
+            Validate((Rule: IsInvalid(id), Parameter: nameof(Student.Id)));
+        }
+
+        private static void ValidateStorageStudent(Student maybeStudent, Guid userId)
         {
             if(maybeStudent is null)
+            {
+                throw new NotFoundStudentException(userId);
+            }
+        }
+
+        private static void ValidateStorageStudent(Student maybeStudent, string userName)
+        {
+            if (maybeStudent is null)
             {
                 throw new NotFoundStudentException(userName);
             }
