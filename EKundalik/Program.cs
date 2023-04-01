@@ -8,8 +8,10 @@ namespace EKundalik
     {
         static void Main(string[] args)
         {
+
             var helper = new ProgramHelper();
             helper.FirstMenuAsync();
+
         }
     }
 }

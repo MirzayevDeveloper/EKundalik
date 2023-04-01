@@ -15,11 +15,12 @@ namespace EKundalik.Services.Students
         public StudentService(IStorageBroker storageBroker) =>
             this.storageBroker = storageBroker;
 
-        public ValueTask<Student> AddStudentAsync(Student student)
+        public ValueTask<Student> AddStudentAsync(Student student) =>
+        TryCatch(async () =>
         {
             ValidateStudentOnAdd(student);
 
-            return this.storageBroker.InsertStudentAsync(student);
-        }
+            return await this.storageBroker.InsertStudentAsync(student);
+        });
     }
 }

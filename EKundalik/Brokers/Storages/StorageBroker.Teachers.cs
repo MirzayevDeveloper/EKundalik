@@ -11,8 +11,8 @@ namespace EKundalik.Brokers.Storages
     {
         public async ValueTask<Teacher> InsertTeacherAsync(Teacher teacher)
         {
-            string columns = "id, full_name, birth_date, gender";
-            string values = "@Id, @FullName, @BirthDate, @Gender";
+            string columns = "id, full_name, user_name ,birth_date, gender";
+            string values = "@Id, @FullName, @UserName ,@BirthDate, @Gender";
 
             return await this.InsertAsync(teacher, "teacher", (columns, values));
         }

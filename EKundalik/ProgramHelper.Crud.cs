@@ -53,7 +53,10 @@ namespace EKundalik
                         Console.Write("enter Full name: ");
                         string fullName = Console.ReadLine();
 
-                        Console.Write("enter BirthDate: ");
+                        Console.Write("create username: ");
+                        string username = Console.ReadLine();
+
+                        Console.Write("enter BirthDate [month:day:year]: ");
                         string dateTime = Console.ReadLine();
                         DateTime birthDate;
                         DateTime.TryParse(dateTime, out birthDate);
@@ -66,6 +69,7 @@ namespace EKundalik
                         {
                             Id = Guid.NewGuid(),
                             FullName = fullName,
+                            UserName = username,
                             BirthDate = birthDate,
                             Gender = genderBool
                         };

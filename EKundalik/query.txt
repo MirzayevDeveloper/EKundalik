@@ -1,6 +1,7 @@
 CREATE TABLE student (
     id UUID PRIMARY KEY,
     full_name VARCHAR(100) NOT NULL,
+    user_name varchar(50) unique not null,
     birth_date DATE NOT NULL,
     gender BOOLEAN NOT NULL
 );

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using static Dapper.SqlMapper;
 
 namespace EKundalik.Brokers.Storages
@@ -48,12 +49,28 @@ namespace EKundalik.Brokers.Storages
             }
         }
 
-        public IQueryable<T> SelectAll<T>(string tableName)
+
+        public async ValueTask<T> SelectByIdAsync<T>(Guid id, string tableName, T @object, string idColumnName = "id", string secondOption = "")
         {
-            throw new NotImplementedException();
+            using (var connection = new NpgsqlConnection(this.connectionString))
+            {
+                string query;
+                if(id != default)
+                {
+                    query = $"Select * from {tableName} where {idColumnName} = {id}";
+                }
+                else
+                {
+                    query = $"Select * from {tableName} where {idColumnName} = {secondOption}";
+                }
+
+                T isHave = connection.QuerySingle<T>(query, @object);
+
+                return isHave;
+            }
         }
 
-        public ValueTask<T> SelectByIdAsync<T>(Guid id, string tableName, string idColumnName = "Id")
+        public IQueryable<T> SelectAll<T>(string tableName)
         {
             throw new NotImplementedException();
         }
