@@ -1,0 +1,36 @@
+CREATE TABLE student (
+    id UUID PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    birth_date DATE NOT NULL,
+    gender BOOLEAN NOT NULL
+);
+
+CREATE TABLE subject (
+    id UUID PRIMARY KEY,
+    subject_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE teacher (
+    id UUID PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    birth_date DATE NOT NULL,
+    gender BOOLEAN NOT NULL
+);
+
+CREATE TABLE Student_Teacher (
+    id UUID PRIMARY KEY,
+    student_id UUID NOT NULL,
+    teacher_id UUID NOT NULL,
+    subject_id UUID NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES student(id),
+    FOREIGN KEY (teacher_id) REFERENCES teacher(id),
+    FOREIGN KEY (subject_id) REFERENCES subject(id)
+);
+
+CREATE TABLE grade (
+    id UUID PRIMARY KEY,
+    grade_rate INTEGER NOT NULL,
+    date DATE NOT NULL,
+    student_teacher_id UUID NOT NULL,
+    FOREIGN KEY (student_teacher_id) REFERENCES Student_Teacher(id)
+);
