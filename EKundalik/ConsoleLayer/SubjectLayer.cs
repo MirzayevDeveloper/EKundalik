@@ -96,10 +96,15 @@ namespace EKundalik.ConsoleLayer
         {
             Subject subject = SelectSubject().Result;
 
-            Console.Write("Enter new Subject name: ");
-            string user = Console.ReadLine();
+            if (subject != null)
+            {
+                Console.Write("Enter new Subject name: ");
+                string user = Console.ReadLine();
 
-            subject.SubjectName = user;
+                subject.SubjectName = user;
+            }
+
+            Console.Clear();
 
             return subject;
         }
@@ -158,7 +163,7 @@ namespace EKundalik.ConsoleLayer
             var Subject = new Subject()
             {
                 Id = Guid.NewGuid(),
-                SubjectName = subject
+                SubjectName = subject.ToLower()
             };
 
             return Subject;

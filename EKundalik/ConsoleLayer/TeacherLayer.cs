@@ -155,7 +155,7 @@ namespace EKundalik.ConsoleLayer
                     }
                     await WriteToFile(Teacher);
 
-                    if (choice != 4) General.Sleep();
+                    if (choice != 4 && choice != 0) General.Sleep();
                 }
             }
             Console.Clear();

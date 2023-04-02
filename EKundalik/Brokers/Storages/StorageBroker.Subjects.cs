@@ -21,7 +21,7 @@ namespace EKundalik.Brokers.Storages
             await this.SelectByIdAsync<Subject>(id, subjectTable);
 
         public async ValueTask<Subject> SelectSubjectBySubjectNameAsync(string SubjectName) =>
-            await SelectObjectByUserName<Subject>(SubjectName, subjectTable);
+            await SelectObjectByUserName<Subject>(SubjectName, subjectTable, "subjectname");
 
         public IQueryable<Subject> SelectAllSubjects() =>
             SelectAll<Subject>(subjectTable);

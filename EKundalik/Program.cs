@@ -62,6 +62,8 @@ namespace EKundalik
                         {
                             var subjectLayer =
                                 new SubjectLayer(storageBroker);
+
+                            subjectLayer.SubjectCase().Wait();
                         }
                         break;
                     case 5:

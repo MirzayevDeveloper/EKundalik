@@ -104,11 +104,24 @@ namespace EKundalik.Brokers.Storages
 
         public async ValueTask<T> SelectObjectByUserName<T>(string name, string tableName, string column = "username")
         {
+            if (column == "username")
+            {
+
+                using (var connection = new NpgsqlConnection(this.connectionString))
+                {
+                    string query = $"SELECT * FROM {tableName} WHERE username = @UserName";
+
+                    T isHave = await connection.QueryFirstOrDefaultAsync<T>(query, new { UserName = name.ToLower() });
+
+                    return isHave;
+                }
+            }
+
             using (var connection = new NpgsqlConnection(this.connectionString))
             {
-                string query = $"SELECT * FROM {tableName} WHERE {column} = @UserName";
+                string query = $"SELECT * FROM {tableName} WHERE subjectname = @SubjectName";
 
-                T isHave = await connection.QueryFirstOrDefaultAsync<T>(query, new { UserName = name.ToLower() });
+                T isHave = await connection.QueryFirstOrDefaultAsync<T>(query, new { SubjectName = name.ToLower() });
 
                 return isHave;
             }
