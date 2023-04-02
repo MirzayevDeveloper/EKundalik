@@ -16,5 +16,6 @@ namespace EKundalik.Services.Students
         ValueTask<Student> RetrieveStudentByUserName(string userName);
         IQueryable<Student> RetrieveAllStudents();
         ValueTask<Student> ModifyStudentAsync(Student student);
+        ValueTask<Student> RemoveStudentByIdAsync(Guid studentId);
     }
 }

@@ -31,6 +31,13 @@ namespace EKundalik.Brokers.Storages
             SelectAll<Student>(studentTable);
 
         public async ValueTask<Student> UpdateStudentAsync(Student student) =>
-            await UpdateAsync<Student>(student, studentTable);
+            await UpdateAsync(student, studentTable);
+
+        public async ValueTask<Student> DeleteStudentAsync(Student student)
+        {
+            await DeleteAsync<Student>(student.Id);
+
+            return student;
+        }
     }
 }

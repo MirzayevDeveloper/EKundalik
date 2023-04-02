@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using EKundalik.Models.Students;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using static Dapper.SqlMapper;
@@ -46,7 +47,6 @@ namespace EKundalik.Brokers.Storages
                 return @object;
             }
         }
-
 
         public async ValueTask<T> SelectByIdAsync<T>(Guid id, string tableName, string idColumnName = "id")
         {
@@ -91,9 +91,16 @@ namespace EKundalik.Brokers.Storages
             }
         }
 
-        public ValueTask<T> DeleteAsync<T>(T @object, string tableName)
+        public async ValueTask<int> DeleteAsync<T>(Guid id, string idColumnName = "id")
         {
-            throw new NotImplementedException();
+            string tableName = typeof(T).Name;
+
+            await using (var connection = new NpgsqlConnection(this.connectionString))
+            {
+                string query = $"DELETE FROM {tableName} WHERE {idColumnName} = @Id";
+
+                return await connection.ExecuteAsync(query, new { Id = id });
+            }
         }
 
         public async ValueTask<T> SelectObjectByUserName<T>(string username, string tableName)

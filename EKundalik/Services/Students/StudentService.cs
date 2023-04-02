@@ -68,5 +68,20 @@ namespace EKundalik.Services.Students
 
             return await this.storageBroker.UpdateStudentAsync(student);
         });
+
+        public ValueTask<Student> RemoveStudentByIdAsync(Guid studentId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentId(studentId);
+
+            Student maybeStudent = 
+                await this.storageBroker
+                    .SelectStudentByIdAsync(studentId);
+
+            ValidateStorageStudent(maybeStudent, studentId);
+
+            return await this.storageBroker
+                .DeleteStudentAsync(maybeStudent);
+        });
     }
 }

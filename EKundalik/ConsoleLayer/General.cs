@@ -66,7 +66,6 @@ namespace EKundalik.ConsoleLayer
         {
             if (obj == default || obj == null) return;
 
-            Console.Clear();
             Console.WriteLine($"Type: {typeof(T).Name}");
 
             foreach (var prop in typeof(T).GetProperties())

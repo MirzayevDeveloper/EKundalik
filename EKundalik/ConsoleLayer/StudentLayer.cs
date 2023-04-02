@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EKundalik.Brokers.Storages;
@@ -59,8 +60,20 @@ namespace EKundalik.ConsoleLayer
                         }
                         break;
                     case 4:
+                        {
+                            Student maybeStudent = DeleteStudent();
+
+                            await this.studentService
+                                .RemoveStudentByIdAsync(maybeStudent.Id);
+                        }
                         break;
                     case 5:
+                        {
+                            IQueryable<Student> students =
+                                this.studentService.RetrieveAllStudents();
+
+                            General.SelectAll(students);
+                        }
                         break;
                     case 6:
                         AddStudent();
@@ -68,6 +81,13 @@ namespace EKundalik.ConsoleLayer
                 }
                 General.Pause();
             }
+        }
+
+        private Student DeleteStudent()
+        {
+            Student student = SelectStudent().Result ?? new();
+
+            return student;
         }
 
         private async ValueTask<Student> UpdateStudent()
@@ -84,6 +104,7 @@ namespace EKundalik.ConsoleLayer
             {
                 if (ReadFromFile().Id != default)
                 {
+                    Console.Clear();
                     General.PrintObjectProperties(student);
 
                     Console.Write("1.Username\n" +
@@ -132,10 +153,10 @@ namespace EKundalik.ConsoleLayer
                     }
                     await WriteToFile(student);
 
-                    if(choice != 4) General.Sleep();
+                    if (choice != 4) General.Sleep();
                 }
             }
-            
+            Console.Clear();
             Student updatedStudent = ReadFromFile();
 
             File.WriteAllText(

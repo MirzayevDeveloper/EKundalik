@@ -16,5 +16,6 @@ namespace EKundalik.Brokers.Storages
         ValueTask<Student> SelectStudentByUserNameAsync(string userName);
         IQueryable<Student> SelectAllStudents();
         ValueTask<Student> UpdateStudentAsync(Student student);
+        ValueTask<Student> DeleteStudentAsync(Student student);
     }
 }
