@@ -11,7 +11,7 @@ namespace EKundalik.Services.Students
 {
     public partial class StudentService
     {
-        private static void ValidateStudentOnAdd(Student student)
+        private static void ValidateStudent(Student student)
         {
             ValidateStudentIsNotNull(student);
 
