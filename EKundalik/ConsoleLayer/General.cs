@@ -4,7 +4,6 @@
 
 using System;
 using System.Linq;
-using System.Reflection;
 using Tynamix.ObjectFiller;
 
 namespace EKundalik.ConsoleLayer
@@ -32,7 +31,7 @@ namespace EKundalik.ConsoleLayer
             Console.Clear();
             Console.Write($"1.Create {name}\n2.Select " +
                 $"{name}\n3.Update {name}\n4.Delete {name}\n" +
-                $"5.Select All {name}\n6.Add random {name}\n7.Back\n" +
+                $"5.Select All {name}\n6.Add random {name}\n7.Back\n\n" +
                 $"choose option: ");
 
             string choose = Console.ReadLine();
@@ -46,20 +45,22 @@ namespace EKundalik.ConsoleLayer
         {
             foreach (var item in list)
             {
-                PrintObjectProperties(item);
+                PrintObjectProperties<T>(item);
                 Console.WriteLine();
             }
         }
 
-        public static void PrintObjectProperties(object obj)
+        public static void PrintObjectProperties<T>(T obj)
         {
-            Type type = obj.GetType();
-            PropertyInfo[] properties = type.GetProperties();
+            if (obj is null) return;
 
-            foreach (PropertyInfo property in properties)
+            Console.Clear();
+            Console.WriteLine($"Type: {typeof(T)}");
+
+            foreach (var prop in typeof(T).GetProperties())
             {
-                object value = property.GetValue(obj);
-                Console.WriteLine($"{property.Name}: {value}");
+                dynamic propValue = prop.GetValue(obj);
+                Console.WriteLine($"{prop.Name}: {propValue}");
             }
         }
     }

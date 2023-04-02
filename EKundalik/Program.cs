@@ -38,27 +38,27 @@ namespace EKundalik
                 {
                     case 1:
                         {
-                            SwitchCase(nameof(Student));
+                            SwitchCaseAsync(nameof(Student));
                         }
                         break;
                     case 2:
                         {
-                            SwitchCase(nameof(Teacher));
+                            SwitchCaseAsync(nameof(Teacher));
                         }
                         break;
                     case 3:
                         {
-                            SwitchCase(nameof(StudentTeacher));
+                            SwitchCaseAsync(nameof(StudentTeacher));
                         }
                         break;
                     case 4:
                         {
-                            SwitchCase(nameof(Subject));
+                            SwitchCaseAsync(nameof(Subject));
                         }
                         break;
                     case 5:
                         {
-                            SwitchCase(nameof(Grade));
+                            SwitchCaseAsync(nameof(Grade));
                         }
                         break;
                     case 6:
@@ -70,7 +70,7 @@ namespace EKundalik
 
         /**************************************************************************************/
 
-        public static void SwitchCase(string name)
+        public static async void SwitchCaseAsync(string name)
         {
             switch (name)
             {
@@ -79,7 +79,7 @@ namespace EKundalik
                         var studentLayer =
                                 new StudentLayer(storageBroker);
 
-                        studentLayer.StudentCase();
+                        await studentLayer.StudentCase();
                     }
                     break;
                 case "Teacher":

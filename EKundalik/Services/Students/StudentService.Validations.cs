@@ -86,9 +86,11 @@ namespace EKundalik.Services.Students
 
         private static void ValidateUserNameIsNotExists(Student newStudent, Student maybeStudent)
         {
-            if(newStudent.Id == maybeStudent.Id || newStudent.UserName == maybeStudent.UserName)
+            if (maybeStudent is null) return;
+
+            if(newStudent.Id == maybeStudent.Id || newStudent.UserName.ToLower() == maybeStudent.UserName)
             {
-                throw new AlreadyExistsStudentException();
+                throw new AlreadyExistsStudentException(newStudent.UserName);
             }
         }
 

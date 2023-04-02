@@ -8,8 +8,8 @@ namespace EKundalik.Models.Students.Exceptions
 {
     public class AlreadyExistsStudentException : Xeption
     {
-        public AlreadyExistsStudentException()
-            : base("Already exist Student")
+        public AlreadyExistsStudentException(string userName)
+            : base($"\nAlready exist Student with user name: {userName}")
         { }
     }
 }

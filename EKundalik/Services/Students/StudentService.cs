@@ -22,9 +22,14 @@ namespace EKundalik.Services.Students
         {
             ValidateStudent(student);
 
+            Student maybeStudent = 
+                await this.storageBroker.SelectStudentByUserNameAsync(student.UserName);
+
+            ValidateUserNameIsNotExists(student, maybeStudent);
+
             return await this.storageBroker.InsertStudentAsync(student);
         });
-
+        
         public ValueTask<Student> RetrieveStudentByIdAsync(Guid id) =>
         TryCatch(async () =>
         {

@@ -5,7 +5,6 @@
 using System;
 using System.Threading.Tasks;
 using EKundalik.Models.Students;
-using EKundalik.Models.Students.Exceptions;
 
 namespace EKundalik.Services.Students
 {
@@ -19,7 +18,7 @@ namespace EKundalik.Services.Students
             {
                 return await returningStudentFunction.Invoke();
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
                 return null;

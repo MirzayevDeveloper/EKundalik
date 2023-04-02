@@ -14,7 +14,7 @@ namespace EKundalik.Brokers.Storages
         private const string studentTable = "student";
         public async ValueTask<Student> InsertStudentAsync(Student student)
         {
-            string columns = "id, full_name, user_name, birth_date, gender";
+            string columns = "id, fullname, username, birthdate, gender";
             string values = "@Id, @FullName, @UserName, @BirthDate, @Gender";
             student.UserName = student.UserName.ToLower();
 

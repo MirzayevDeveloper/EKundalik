@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EKundalik.Brokers.Storages;
 using EKundalik.Models.Students;
 using EKundalik.Services.Students;
@@ -18,7 +19,7 @@ namespace EKundalik.ConsoleLayer
         public StudentLayer(IStorageBroker storageBroker) =>
             this.studentService = new StudentService(storageBroker);
 
-        public void StudentCase()
+        public async Task StudentCase()
         {
             bool isActive = true;
 
@@ -46,7 +47,6 @@ namespace EKundalik.ConsoleLayer
                     case 6:
                         break;
                 }
-
                 General.Pause();
             }
         }
@@ -89,10 +89,11 @@ namespace EKundalik.ConsoleLayer
             {
                 Id = Guid.NewGuid(),
                 FullName = fullName,
-                UserName = username,
+                UserName = username.ToLower(),
                 BirthDate = birthDate,
                 Gender = genderBool
             };
+
 
             Student maybeStudent = 
                 await this.studentService.AddStudentAsync(student);
