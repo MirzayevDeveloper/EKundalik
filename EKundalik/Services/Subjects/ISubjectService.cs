@@ -11,11 +11,11 @@ namespace EKundalik.Services.Subjects
 {
     public interface ISubjectService
     {
-        ValueTask<Subject> AddSubjectAsync(Subject Subject);
-        ValueTask<Subject> RetrieveSubjectByIdAsync(Guid SubjectId);
-        ValueTask<Subject> RetrieveSubjectBySubjectName(string userName);
+        ValueTask<Subject> AddSubjectAsync(Subject subject);
+        ValueTask<Subject> RetrieveSubjectByIdAsync(Guid subjectId);
+        ValueTask<Subject> RetrieveSubjectBySubjectName(string subjectName);
         IQueryable<Subject> RetrieveAllSubjects();
-        ValueTask<Subject> ModifySubjectAsync(Subject Subject);
-        ValueTask<Subject> RemoveSubjectByIdAsync(Guid SubjectId);
+        ValueTask<Subject> ModifySubjectAsync(Subject subject);
+        ValueTask<Subject> RemoveSubjectByIdAsync(Guid subjectId);
     }
 }

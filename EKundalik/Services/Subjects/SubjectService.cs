@@ -17,17 +17,17 @@ namespace EKundalik.Services.Subjects
         public SubjectService(IStorageBroker storageBroker) =>
             this.storageBroker = storageBroker;
 
-        public ValueTask<Subject> AddSubjectAsync(Subject Subject) =>
+        public ValueTask<Subject> AddSubjectAsync(Subject subject) =>
         TryCatch(async () =>
         {
-            ValidateSubject(Subject);
+            ValidateSubject(subject);
 
             Subject maybeSubject =
-                await this.storageBroker.SelectSubjectBySubjectNameAsync(Subject.SubjectName);
+                await this.storageBroker.SelectSubjectBySubjectNameAsync(subject.SubjectName);
 
-            ValidateSubjectIsNotExists(Subject, maybeSubject);
+            ValidateSubjectIsNotExists(subject, maybeSubject);
 
-            return await this.storageBroker.InsertSubjectAsync(Subject);
+            return await this.storageBroker.InsertSubjectAsync(subject);
         });
 
         public ValueTask<Subject> RetrieveSubjectByIdAsync(Guid id) =>
@@ -42,15 +42,15 @@ namespace EKundalik.Services.Subjects
             return maybeSubject;
         });
 
-        public ValueTask<Subject> RetrieveSubjectBySubjectName(string SubjectName) =>
+        public ValueTask<Subject> RetrieveSubjectBySubjectName(string subjectName) =>
         TryCatch(async () =>
         {
-            ValidateSubjectName(SubjectName);
+            ValidateSubjectName(subjectName);
 
             Subject maybeSubject =
-                await this.storageBroker.SelectSubjectBySubjectNameAsync(SubjectName);
+                await this.storageBroker.SelectSubjectBySubjectNameAsync(subjectName);
 
-            ValidateStorageSubject(maybeSubject, SubjectName);
+            ValidateStorageSubject(maybeSubject, subjectName);
 
             return maybeSubject;
         });
@@ -58,27 +58,27 @@ namespace EKundalik.Services.Subjects
         public IQueryable<Subject> RetrieveAllSubjects() =>
             this.storageBroker.SelectAllSubjects();
 
-        public ValueTask<Subject> ModifySubjectAsync(Subject Subject) =>
+        public ValueTask<Subject> ModifySubjectAsync(Subject subject) =>
         TryCatch(async () =>
         {
-            ValidateSubject(Subject);
+            ValidateSubject(subject);
 
             Subject maybeSubject =
-                await this.storageBroker.SelectSubjectByIdAsync(Subject.Id);
+                await this.storageBroker.SelectSubjectByIdAsync(subject.Id);
 
-            return await this.storageBroker.UpdateSubjectAsync(Subject);
+            return await this.storageBroker.UpdateSubjectAsync(subject);
         });
 
-        public ValueTask<Subject> RemoveSubjectByIdAsync(Guid SubjectId) =>
+        public ValueTask<Subject> RemoveSubjectByIdAsync(Guid subjectId) =>
         TryCatch(async () =>
         {
-            ValidateSubjectId(SubjectId);
+            ValidateSubjectId(subjectId);
 
             Subject maybeSubject =
                 await this.storageBroker
-                    .SelectSubjectByIdAsync(SubjectId);
+                    .SelectSubjectByIdAsync(subjectId);
 
-            ValidateStorageSubject(maybeSubject, SubjectId);
+            ValidateStorageSubject(maybeSubject, subjectId);
 
             return await this.storageBroker
                 .DeleteSubjectAsync(maybeSubject);
