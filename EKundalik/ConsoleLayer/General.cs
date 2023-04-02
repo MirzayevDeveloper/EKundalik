@@ -29,9 +29,10 @@ namespace EKundalik.ConsoleLayer
 
         public static void Sleep()
         {
+            Console.Write("\nChanging");
             for (int i = 0; i < 3; i++)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(400);
                 Console.Beep();
                 Console.Write(".");
             }

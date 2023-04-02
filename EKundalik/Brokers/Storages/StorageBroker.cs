@@ -92,7 +92,7 @@ namespace EKundalik.Brokers.Storages
 
         public async ValueTask<int> DeleteAsync<T>(Guid id, string idColumnName = "id")
         {
-            string tableName = typeof(T).Name;
+            string tableName = typeof(T).Name + "s";
 
             await using (var connection = new NpgsqlConnection(this.connectionString))
             {

@@ -11,7 +11,7 @@ namespace EKundalik.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        private const string studentTable = "student";
+        private const string studentTable = "students";
         public async ValueTask<Student> InsertStudentAsync(Student student)
         {
             string columns = "id, fullname, username, birthdate, gender";

@@ -1,37 +1,37 @@
-CREATE TABLE student (
+CREATE TABLE students (
     id UUID PRIMARY KEY,
-    full_name VARCHAR(100) NOT NULL,
-    user_name varchar(50) unique not null,
-    birth_date DATE NOT NULL,
+    fullname VARCHAR(100) NOT NULL,
+    username varchar(50) unique not null,
+    birthdate DATE NOT NULL,
     gender BOOLEAN NOT NULL
 );
 
-CREATE TABLE subject (
+CREATE TABLE subjects (
     id UUID PRIMARY KEY,
-    subject_name VARCHAR(100) NOT NULL
+    subjectname VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE teacher (
+CREATE TABLE teachers (
     id UUID PRIMARY KEY,
-    full_name VARCHAR(100) NOT NULL,
-    birth_date DATE NOT NULL,
+    fullname VARCHAR(100) NOT NULL,
+    birthdate DATE NOT NULL,
     gender BOOLEAN NOT NULL
 );
 
-CREATE TABLE Student_Teacher (
+CREATE TABLE StudentsTeachers (
     id UUID PRIMARY KEY,
-    student_id UUID NOT NULL,
-    teacher_id UUID NOT NULL,
-    subject_id UUID NOT NULL,
-    FOREIGN KEY (student_id) REFERENCES student(id),
-    FOREIGN KEY (teacher_id) REFERENCES teacher(id),
-    FOREIGN KEY (subject_id) REFERENCES subject(id)
+    studentid UUID NOT NULL,
+    teacherid UUID NOT NULL,
+    subjectid UUID NOT NULL,
+    FOREIGN KEY (studentid) REFERENCES students(id),
+    FOREIGN KEY (teacherid) REFERENCES teachers(id),
+    FOREIGN KEY (subjectid) REFERENCES subjects(id)
 );
 
-CREATE TABLE grade (
+CREATE TABLE grades (
     id UUID PRIMARY KEY,
-    grade_rate INTEGER NOT NULL,
+    graderate INTEGER NOT NULL,
     date DATE NOT NULL,
-    student_teacher_id UUID NOT NULL,
-    FOREIGN KEY (student_teacher_id) REFERENCES Student_Teacher(id)
+    studentsteachersid UUID NOT NULL,
+    FOREIGN KEY (studentsteachersid) REFERENCES StudentsTeachers(id)
 );
