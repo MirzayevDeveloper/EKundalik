@@ -10,6 +10,7 @@ namespace EKundalik.Models.Teachers
     {
         public Guid Id { get; set; }
         public string FullName { get; set; }
+        public string UserName { get; set; }
         public DateTime BirthDate { get; set; }
         public bool Gender { get; set; }
     }

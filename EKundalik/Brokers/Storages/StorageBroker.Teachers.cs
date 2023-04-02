@@ -3,7 +3,9 @@
 // --------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using EKundalik.Models.Teachers;
 using EKundalik.Models.Teachers;
 
 namespace EKundalik.Brokers.Storages
@@ -11,18 +13,32 @@ namespace EKundalik.Brokers.Storages
     public partial class StorageBroker
     {
         private const string teacherTable = "teachers";
-        public async ValueTask<Teacher> InsertTeacherAsync(Teacher teacher)
+        public async ValueTask<Teacher> InsertTeacherAsync(Teacher Teacher)
         {
-            string columns = "id, full_name, user_name ,birth_date, gender";
-            string values = "@Id, @FullName, @UserName ,@BirthDate, @Gender";
+            string columns = "id, fullname, username, birthdate, gender";
+            string values = "@Id, @FullName, @UserName, @BirthDate, @Gender";
+            Teacher.UserName = Teacher.UserName.ToLower();
 
-            return await this.InsertAsync(teacher, "teacher", (columns, values));
+            return await this.InsertAsync(Teacher, teacherTable, (columns, values));
         }
 
-        public ValueTask<Teacher> SelectTeacherByIdAsync(Guid id) =>
-            SelectByIdAsync<Teacher>(id, teacherTable);
+        public async ValueTask<Teacher> SelectTeacherByIdAsync(Guid id) =>
+            await this.SelectByIdAsync<Teacher>(id, teacherTable);
 
-        public ValueTask<Teacher> SelectTeacherByUserNameAsync(string userName) =>
-            SelectObjectByUserName<Teacher>(userName, teacherTable);
+        public async ValueTask<Teacher> SelectTeacherByUserNameAsync(string userName) =>
+            await SelectObjectByUserName<Teacher>(userName, teacherTable);
+
+        public IQueryable<Teacher> SelectAllTeachers() =>
+            SelectAll<Teacher>(teacherTable);
+
+        public async ValueTask<Teacher> UpdateTeacherAsync(Teacher Teacher) =>
+            await UpdateAsync(Teacher, teacherTable);
+
+        public async ValueTask<Teacher> DeleteTeacherAsync(Teacher Teacher)
+        {
+            await DeleteAsync<Teacher>(Teacher.Id);
+
+            return Teacher;
+        }
     }
 }
