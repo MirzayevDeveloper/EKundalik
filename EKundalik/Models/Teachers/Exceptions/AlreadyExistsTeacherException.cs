@@ -4,7 +4,7 @@
 
 using Xeptions;
 
-namespace EKundalik.Models.Students.Exceptions
+namespace EKundalik.Models.Teachers.Exceptions
 {
     public class AlreadyExistsTeacherException : Xeption
     {

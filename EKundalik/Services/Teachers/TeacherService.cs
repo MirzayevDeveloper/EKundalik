@@ -2,87 +2,86 @@
 // Copyright (c) Coalition of Good-Hearted Engineers
 // --------------------------------------------------------
 
-using System.Linq;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EKundalik.Brokers.Storages;
-using EKundalik.Models.Teacherts;
 using EKundalik.Models.Teachers;
 
 namespace EKundalik.Services.Teachers
 {
-    public class TeacherService : ITeacherService
+    public partial class TeacherService : ITeacherService
     {
         private readonly IStorageBroker storageBroker;
 
-        public TeachertService(IStorageBroker storageBroker) =>
+        public TeacherService(IStorageBroker storageBroker) =>
             this.storageBroker = storageBroker;
 
-        public ValueTask<Teachert> AddTeachertAsync(Teachert Teachert) =>
+        public ValueTask<Teacher> AddTeacherAsync(Teacher Teacher) =>
         TryCatch(async () =>
         {
-            ValidateTeachert(Teachert);
+            ValidateTeacher(Teacher);
 
-            Teachert maybeTeachert =
-                await this.storageBroker.SelectTeachertByUserNameAsync(Teachert.UserName);
+            Teacher maybeTeacher =
+                await this.storageBroker.SelectTeacherByUserNameAsync(Teacher.UserName);
 
-            ValidateUserNameIsNotExists(Teachert, maybeTeachert);
+            ValidateUserNameIsNotExists(Teacher, maybeTeacher);
 
-            return await this.storageBroker.InsertTeachertAsync(Teachert);
+            return await this.storageBroker.InsertTeacherAsync(Teacher);
         });
 
-        public ValueTask<Teachert> RetrieveTeachertByIdAsync(Guid id) =>
+        public ValueTask<Teacher> RetrieveTeacherByIdAsync(Guid id) =>
         TryCatch(async () =>
         {
-            ValidateTeachertId(id);
+            ValidateTeacherId(id);
 
-            Teachert maybeTeachert = await this.storageBroker.SelectTeachertByIdAsync(id);
+            Teacher maybeTeacher = await this.storageBroker.SelectTeacherByIdAsync(id);
 
-            ValidateStorageTeachert(maybeTeachert, id);
+            ValidateStorageTeacher(maybeTeacher, id);
 
-            return maybeTeachert;
+            return maybeTeacher;
         });
 
-        public ValueTask<Teachert> RetrieveTeachertByUserName(string userName) =>
+        public ValueTask<Teacher> RetrieveTeacherByUserName(string userName) =>
         TryCatch(async () =>
         {
-            ValidateTeachertUserName(userName);
+            ValidateTeacherUserName(userName);
 
-            Teachert maybeTeachert =
-                await this.storageBroker.SelectTeachertByUserNameAsync(userName);
+            Teacher maybeTeacher =
+                await this.storageBroker.SelectTeacherByUserNameAsync(userName);
 
-            ValidateStorageTeachert(maybeTeachert, userName);
+            ValidateStorageTeacher(maybeTeacher, userName);
 
-            return maybeTeachert;
+            return maybeTeacher;
         });
 
-        public IQueryable<Teachert> RetrieveAllTeacherts() =>
-            this.storageBroker.SelectAllTeacherts();
+        public IQueryable<Teacher> RetrieveAllTeachers() =>
+            this.storageBroker.SelectAllTeachers();
 
-        public ValueTask<Teachert> ModifyTeachertAsync(Teachert Teachert) =>
+        public ValueTask<Teacher> ModifyTeacherAsync(Teacher Teacher) =>
         TryCatch(async () =>
         {
-            ValidateTeachertOnModify(Teachert);
+            ValidateTeacherOnModify(Teacher);
 
-            Teachert maybeTeachert =
-                await this.storageBroker.SelectTeachertByIdAsync(Teachert.Id);
+            Teacher maybeTeacher =
+                await this.storageBroker.SelectTeacherByIdAsync(Teacher.Id);
 
-            return await this.storageBroker.UpdateTeachertAsync(Teachert);
+            return await this.storageBroker.UpdateTeacherAsync(Teacher);
         });
 
-        public ValueTask<Teachert> RemoveTeachertByIdAsync(Guid TeachertId) =>
+        public ValueTask<Teacher> RemoveTeacherByIdAsync(Guid TeacherId) =>
         TryCatch(async () =>
         {
-            ValidateTeachertId(TeachertId);
+            ValidateTeacherId(TeacherId);
 
-            Teachert maybeTeachert =
+            Teacher maybeTeacher =
                 await this.storageBroker
-                    .SelectTeachertByIdAsync(TeachertId);
+                    .SelectTeacherByIdAsync(TeacherId);
 
-            ValidateStorageTeachert(maybeTeachert, TeachertId);
+            ValidateStorageTeacher(maybeTeacher, TeacherId);
 
             return await this.storageBroker
-                .DeleteTeachertAsync(maybeTeachert);
+                .DeleteTeacherAsync(maybeTeacher);
         });
     }
 }

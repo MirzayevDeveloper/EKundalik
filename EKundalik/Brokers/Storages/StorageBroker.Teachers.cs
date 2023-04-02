@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using EKundalik.Models.Teachers;
-using EKundalik.Models.Teachers;
 
 namespace EKundalik.Brokers.Storages
 {

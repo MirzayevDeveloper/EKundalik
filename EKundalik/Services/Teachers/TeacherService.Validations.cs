@@ -5,6 +5,7 @@
 using System;
 using System.Linq;
 using EKundalik.Models.Teachers;
+using EKundalik.Models.Teachers.Exceptions;
 
 namespace EKundalik.Services.Teachers
 {
