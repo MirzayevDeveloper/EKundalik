@@ -4,7 +4,6 @@
 
 using System;
 using System.Threading.Tasks;
-using EKundalik.Models.Students;
 using EKundalik.Models.Teachers;
 
 namespace EKundalik.Brokers.Storages

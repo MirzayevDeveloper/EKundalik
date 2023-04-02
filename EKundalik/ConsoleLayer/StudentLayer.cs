@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using EKundalik.Brokers.Storages;
 using EKundalik.Models.Students;
@@ -77,6 +76,9 @@ namespace EKundalik.ConsoleLayer
                         break;
                     case 6:
                         AddStudent();
+                        break;
+                    case 7:
+                        isActive = false;
                         break;
                 }
                 General.Pause();

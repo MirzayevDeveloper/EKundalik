@@ -3,7 +3,6 @@
 // --------------------------------------------------------
 
 using System;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 using EKundalik.Models.Students;
 using EKundalik.Models.Students.Exceptions;
@@ -20,7 +19,7 @@ namespace EKundalik.Services.Students
             {
                 return await returningStudentFunction.Invoke();
             }
-            catch(InvalidStudentException invalidStudentException)
+            catch (InvalidStudentException invalidStudentException)
             {
                 foreach (var item in invalidStudentException.Data.Keys)
                     Console.WriteLine("\nInvalid " + item);

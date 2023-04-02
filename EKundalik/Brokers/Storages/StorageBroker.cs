@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
-using EKundalik.Models.Students;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using static Dapper.SqlMapper;

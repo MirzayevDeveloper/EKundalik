@@ -3,7 +3,6 @@
 // --------------------------------------------------------
 
 using System;
-using System.Data;
 using System.Linq;
 using EKundalik.Models.Students;
 using EKundalik.Models.Students.Exceptions;
@@ -43,7 +42,7 @@ namespace EKundalik.Services.Students
         {
             if (maybeStudent is null) return;
 
-            if(newStudent.Id == maybeStudent.Id || newStudent.UserName.ToLower() == maybeStudent.UserName)
+            if (newStudent.Id == maybeStudent.Id || newStudent.UserName.ToLower() == maybeStudent.UserName)
             {
                 throw new AlreadyExistsStudentException(newStudent.UserName);
             }
@@ -76,7 +75,7 @@ namespace EKundalik.Services.Students
 
         private static void ValidateStorageStudent(Student maybeStudent, Guid userId)
         {
-            if(maybeStudent is null)
+            if (maybeStudent is null)
             {
                 throw new NotFoundStudentException(userId);
             }

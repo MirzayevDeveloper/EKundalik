@@ -10,7 +10,7 @@ namespace EKundalik.Models.Students.Exceptions
     public class NotFoundStudentException : Xeption
     {
         public NotFoundStudentException(Guid id)
-            : base($"Could not find Student with id: {id}") 
+            : base($"Could not find Student with id: {id}")
         { }
 
         public NotFoundStudentException(string userName)

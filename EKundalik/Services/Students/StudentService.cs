@@ -22,14 +22,14 @@ namespace EKundalik.Services.Students
         {
             ValidateStudent(student);
 
-            Student maybeStudent = 
+            Student maybeStudent =
                 await this.storageBroker.SelectStudentByUserNameAsync(student.UserName);
 
             ValidateUserNameIsNotExists(student, maybeStudent);
 
             return await this.storageBroker.InsertStudentAsync(student);
         });
-        
+
         public ValueTask<Student> RetrieveStudentByIdAsync(Guid id) =>
         TryCatch(async () =>
         {
@@ -47,7 +47,7 @@ namespace EKundalik.Services.Students
         {
             ValidateStudentUserName(userName);
 
-            Student maybeStudent = 
+            Student maybeStudent =
                 await this.storageBroker.SelectStudentByUserNameAsync(userName);
 
             ValidateStorageStudent(maybeStudent, userName);
@@ -74,7 +74,7 @@ namespace EKundalik.Services.Students
         {
             ValidateStudentId(studentId);
 
-            Student maybeStudent = 
+            Student maybeStudent =
                 await this.storageBroker
                     .SelectStudentByIdAsync(studentId);
 
