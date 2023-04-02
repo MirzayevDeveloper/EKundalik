@@ -212,10 +212,8 @@ namespace EKundalik.ConsoleLayer
                 list.Add(maybeStudent);
             }
 
-            for (int i = 0; i < count; i++)
-            {
-                Console.WriteLine($"{maybeStudent.Id}\n{maybeStudent.FullName}");
-            }
+            Console.WriteLine($"Successfully added {count} objects...");
+            Console.ReadKey();
         }
 
         private async ValueTask<Student> AddStudentMenu()

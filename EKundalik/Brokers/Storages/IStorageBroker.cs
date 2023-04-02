@@ -15,6 +15,6 @@ namespace EKundalik.Brokers.Storages
         IQueryable<T> SelectAll<T>(string tableName);
         ValueTask<T> UpdateAsync<T>(T @object, string tableName);
         ValueTask<int> DeleteAsync<T>(Guid id, string idColumnName = "id");
-        ValueTask<T> SelectObjectByUserName<T>(string userName, string tableName);
+        ValueTask<T> SelectObjectByUserName<T>(string name, string tableName, string column = "username");
     }
 }

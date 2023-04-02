@@ -8,12 +8,13 @@ CREATE TABLE students (
 
 CREATE TABLE subjects (
     id UUID PRIMARY KEY,
-    subjectname VARCHAR(100) NOT NULL
+    subjectname VARCHAR(100) unique not null
 );
 
 CREATE TABLE teachers (
     id UUID PRIMARY KEY,
     fullname VARCHAR(100) NOT NULL,
+    username varchar(50) unique not null,
     birthdate DATE NOT NULL,
     gender BOOLEAN NOT NULL
 );

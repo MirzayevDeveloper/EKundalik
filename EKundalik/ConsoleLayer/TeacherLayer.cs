@@ -16,10 +16,10 @@ namespace EKundalik.ConsoleLayer
 {
     public class TeacherLayer
     {
-        private readonly ITeacherService TeacherService;
+        private readonly ITeacherService teacherService;
 
         public TeacherLayer(IStorageBroker storageBroker) =>
-            this.TeacherService = new TeacherService(storageBroker);
+            this.teacherService = new TeacherService(storageBroker);
 
         public async Task TeacherCase()
         {
@@ -38,7 +38,7 @@ namespace EKundalik.ConsoleLayer
                             Teacher maybeTeacher =
                                 await AddTeacherMenu();
 
-                            await this.TeacherService
+                            await this.teacherService
                                 .AddTeacherAsync(maybeTeacher);
                         }
                         break;
@@ -52,7 +52,7 @@ namespace EKundalik.ConsoleLayer
                             Teacher maybeTeacher =
                                 await UpdateTeacher();
 
-                            Teacher storageTeacher = await this.TeacherService
+                            Teacher storageTeacher = await this.teacherService
                                 .ModifyTeacherAsync(maybeTeacher);
 
                             General.PrintObjectProperties(storageTeacher);
@@ -62,14 +62,14 @@ namespace EKundalik.ConsoleLayer
                         {
                             Teacher maybeTeacher = DeleteTeacher();
 
-                            await this.TeacherService
+                            await this.teacherService
                                 .RemoveTeacherByIdAsync(maybeTeacher.Id);
                         }
                         break;
                     case 5:
                         {
                             IQueryable<Teacher> Teachers =
-                                this.TeacherService.RetrieveAllTeachers();
+                                this.teacherService.RetrieveAllTeachers();
 
                             General.SelectAll(Teachers);
                         }
@@ -185,7 +185,7 @@ namespace EKundalik.ConsoleLayer
             string user = Console.ReadLine();
 
             Teacher maybeTeacher =
-                await this.TeacherService
+                await this.teacherService
                 .RetrieveTeacherByUserName(user);
 
             General.PrintObjectProperties(maybeTeacher);
@@ -207,15 +207,13 @@ namespace EKundalik.ConsoleLayer
 
             for (int i = 0; i < count; i++)
             {
-                maybeTeacher = await this.TeacherService.AddTeacherAsync(
+                maybeTeacher = await this.teacherService.AddTeacherAsync(
                     General.CreateObjectFiller<Teacher>().Create());
                 list.Add(maybeTeacher);
             }
 
-            for (int i = 0; i < count; i++)
-            {
-                Console.WriteLine($"{maybeTeacher.Id}\n{maybeTeacher.FullName}");
-            }
+            Console.WriteLine($"Successfully added {count} objects...");
+            Console.ReadKey();
         }
 
         private async ValueTask<Teacher> AddTeacherMenu()

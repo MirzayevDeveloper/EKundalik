@@ -48,6 +48,8 @@ namespace EKundalik
                         {
                             var teacherLayer =
                                 new TeacherLayer(storageBroker);
+
+                            teacherLayer.TeacherCase().Wait();
                         }
                         break;
                     case 3:
