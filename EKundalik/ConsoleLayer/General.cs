@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 using Tynamix.ObjectFiller;
 
 namespace EKundalik.ConsoleLayer
@@ -22,8 +23,19 @@ namespace EKundalik.ConsoleLayer
 
         public static void Pause()
         {
-            Console.WriteLine("Press any key to continue...");
+            Console.Write("\nPress any key to continue.");
             Console.ReadKey();
+        }
+
+        public static void Sleep()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Thread.Sleep(500);
+                Console.Beep();
+                Console.Write(".");
+            }
+            Console.Clear();
         }
 
         public static int PrintCrudOptions(string name)
@@ -31,7 +43,7 @@ namespace EKundalik.ConsoleLayer
             Console.Clear();
             Console.Write($"1.Create {name}\n2.Select " +
                 $"{name}\n3.Update {name}\n4.Delete {name}\n" +
-                $"5.Select All {name}\n6.Add random {name}\n7.Back\n\n" +
+                $"5.Select All {name}s\n6.Add random {name}s\n7.Back\n\n" +
                 $"choose option: ");
 
             string choose = Console.ReadLine();
@@ -41,7 +53,7 @@ namespace EKundalik.ConsoleLayer
             return choice;
         }
 
-        public static void SelectAll<T>(IQueryable<T> list)
+        public static void SelectAll<T>(IQueryable<T> list) where T : class
         {
             foreach (var item in list)
             {
@@ -50,21 +62,22 @@ namespace EKundalik.ConsoleLayer
             }
         }
 
-        public static void PrintObjectProperties<T>(T obj)
+        public static void PrintObjectProperties<T>(T obj) where T : class
         {
-            if (obj is null) return;
+            if (obj == default || obj == null) return;
 
             Console.Clear();
-            Console.WriteLine($"Type: {typeof(T)}");
+            Console.WriteLine($"Type: {typeof(T).Name}");
 
             foreach (var prop in typeof(T).GetProperties())
             {
+                if (prop.PropertyType == typeof(Guid)) continue;
+
                 dynamic propValue = prop.GetValue(obj);
                 Console.WriteLine($"{prop.Name}: {propValue}");
             }
 
             Console.WriteLine();
-            Pause();
         }
     }
 }

@@ -4,11 +4,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using EKundalik.Brokers.Storages;
 using EKundalik.Models.Students;
 using EKundalik.Services.Students;
-using Tynamix.ObjectFiller;
+using Newtonsoft.Json;
 
 namespace EKundalik.ConsoleLayer
 {
@@ -33,28 +35,153 @@ namespace EKundalik.ConsoleLayer
                 {
                     case 1:
                         {
-                            AddStudentMenu();
+                            Student maybeStudent =
+                                await AddStudentMenu();
+
+                            await this.studentService
+                                .AddStudentAsync(maybeStudent);
                         }
                         break;
                     case 2:
+                        {
+                            await SelectStudent();
+                        }
                         break;
                     case 3:
+                        {
+                            Student maybeStudent =
+                                await UpdateStudent();
+
+                            Student storageStudent = await this.studentService
+                                .ModifyStudentAsync(maybeStudent);
+
+                            General.PrintObjectProperties(storageStudent);
+                        }
                         break;
                     case 4:
                         break;
                     case 5:
                         break;
                     case 6:
+                        AddStudent();
                         break;
                 }
                 General.Pause();
             }
         }
 
-        private async void AddStudent(int count)
+        private async ValueTask<Student> UpdateStudent()
         {
+            bool isActive = true;
+            Student student = SelectStudent().Result;
+
+            if (student != null)
+            {
+                await WriteToFile(student);
+            }
+
+            while (isActive && student != null)
+            {
+                if (ReadFromFile().Id != default)
+                {
+                    General.PrintObjectProperties(student);
+
+                    Console.Write("1.Username\n" +
+                                    "2.FullName\n" +
+                                    "3.BirthDate\n" +
+                                    "4.Exit\n" +
+                                    "Which property do you want to change: ");
+
+                    string choose = Console.ReadLine();
+                    int choice;
+                    int.TryParse(choose, out choice);
+
+                    Console.Beep();
+
+                    switch (choice)
+                    {
+                        case 1:
+                            {
+                                Console.Write("Create new username: ");
+                                string user = Console.ReadLine();
+
+                                student.UserName = user;
+                            }
+                            break;
+                        case 2:
+                            {
+                                Console.Write("Enter new Full name: ");
+                                string name = Console.ReadLine();
+
+                                student.FullName = name;
+                            }
+                            break;
+                        case 3:
+                            {
+                                Console.Write("Enter a new birth date: ");
+                                string birth = Console.ReadLine();
+                                DateTime birthDate;
+                                DateTime.TryParse(birth, out birthDate);
+
+                                student.BirthDate = birthDate;
+                            }
+                            break;
+                        case 4:
+                            isActive = false;
+                            break;
+                    }
+                    await WriteToFile(student);
+
+                    if(choice != 4) General.Sleep();
+                }
+            }
+            
+            Student updatedStudent = ReadFromFile();
+
+            File.WriteAllText(
+                "../../../ConsoleLayer/data.json", "");
+
+            return updatedStudent;
+        }
+
+        private async ValueTask WriteToFile(Student student)
+        {
+            File.WriteAllText("../../../ConsoleLayer/data.json",
+                JsonConvert.SerializeObject(student, Formatting.Indented));
+        }
+
+        private Student ReadFromFile()
+        {
+            return JsonConvert.DeserializeObject<Student>(
+                File.ReadAllText("../../../ConsoleLayer/data.json"));
+        }
+
+        private async ValueTask<Student> SelectStudent()
+        {
+            Console.Write("Enter username: ");
+            string user = Console.ReadLine();
+
+            Student maybeStudent =
+                await this.studentService
+                .RetrieveStudentByUserName(user);
+
+            General.PrintObjectProperties(maybeStudent);
+
+            return maybeStudent;
+        }
+
+        private async void AddStudent()
+        {
+            Console.Write("Nechta Student Objectni Tablega kiritmoqchisiz: ");
+            string choice = Console.ReadLine();
+            int count;
+            int.TryParse(choice, out count);
+
+            if (count is 0) return;
+
             List<Student> list = new List<Student>();
             Student maybeStudent = new();
+
             for (int i = 0; i < count; i++)
             {
                 maybeStudent = await this.studentService.AddStudentAsync(
@@ -68,7 +195,7 @@ namespace EKundalik.ConsoleLayer
             }
         }
 
-        private async void AddStudentMenu()
+        private async ValueTask<Student> AddStudentMenu()
         {
             Console.Write("create your username: ");
             string username = Console.ReadLine();
@@ -94,11 +221,7 @@ namespace EKundalik.ConsoleLayer
                 Gender = genderBool
             };
 
-
-            Student maybeStudent = 
-                await this.studentService.AddStudentAsync(student);
-
-            General.PrintObjectProperties(maybeStudent);
+            return student;
         }
     }
 }

@@ -61,7 +61,7 @@ namespace EKundalik.Services.Students
         public ValueTask<Student> ModifyStudentAsync(Student student) =>
         TryCatch(async () =>
         {
-            ValidateStudent(student);
+            ValidateStudentOnModify(student);
 
             Student maybeStudent =
                 await this.storageBroker.SelectStudentByIdAsync(student.Id);

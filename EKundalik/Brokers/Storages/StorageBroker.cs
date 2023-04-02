@@ -52,9 +52,9 @@ namespace EKundalik.Brokers.Storages
         {
             await using (var connection = new NpgsqlConnection(this.connectionString))
             {
-                string query = $"select * from {tableName} where {idColumnName} = @{id}";
+                string query = $"select * from {tableName} where {idColumnName} = @Id";
 
-                var isHave = connection.QueryFirstOrDefault<T>(query, new { Id = id });
+                var isHave = await connection.QueryFirstOrDefaultAsync<T>(query, new { Id = id });
 
                 return isHave;
             }
