@@ -62,6 +62,9 @@ namespace EKundalik.ConsoleLayer
                 dynamic propValue = prop.GetValue(obj);
                 Console.WriteLine($"{prop.Name}: {propValue}");
             }
+
+            Console.WriteLine();
+            Pause();
         }
     }
 }

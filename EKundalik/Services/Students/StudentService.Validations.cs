@@ -4,6 +4,7 @@
 
 using System;
 using System.Data;
+using System.Linq;
 using EKundalik.Models.Students;
 using EKundalik.Models.Students.Exceptions;
 
@@ -17,10 +18,24 @@ namespace EKundalik.Services.Students
 
             Validate(
                 (Rule: IsInvalid(student.Id), Parameter: nameof(Student.Id)),
+                (Rule: IsInvalid(student.UserName), Parameter: nameof(student.UserName)),
                 (Rule: IsInvalid(student.FullName), Parameter: nameof(Student.FullName)),
-                (Rule: IsInvalid(student.BirthDate), Parameter: nameof(Student.BirthDate))
+                (Rule: IsInvalid(student.BirthDate), Parameter: nameof(Student.BirthDate)),
+                (Rule: IsInvalidUserName(student.UserName), Parameter: nameof(Student.UserName))
                 );
         }
+
+        private static dynamic IsInvalidUserName(string text) => new
+        {
+            Condition = text.All(char.IsNumber),
+            Message = "User name is invalid"
+        };
+
+        private static dynamic IsInvalidName(string text) => new
+        {
+            Condition = !text.All(char.IsLetter),
+            Message = "Full name is invalid"
+        };
 
         private static void ValidateStudentUserName(string userName)
         {
