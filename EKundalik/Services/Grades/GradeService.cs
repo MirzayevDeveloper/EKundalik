@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EKundalik.Brokers.Storages;
 using EKundalik.Models.Grades;
+using EKundalik.Models.StudentTeachers;
 
 namespace EKundalik.Services.Grades
 {
@@ -21,12 +22,21 @@ namespace EKundalik.Services.Grades
         TryCatch(async () =>
         {
             ValidateGrade(grade);
+
             Grade maybeGrade =
-                await this.storageBroker.SelectGradeByIdAsync(grade.Id);
+                await this.storageBroker
+                    .SelectGradeByIdAsync(grade.Id);
 
-            // student teacher ni tekshirish kerak
+            StudentTeacher maybeStudentTeacher = 
+                await this.storageBroker
+                    .SelectStudentTeacherByIdAsync(
+                        grade.StudentTeacherId);
 
-            return await this.storageBroker.InsertGradeAsync(grade);
+            ValidateStudentTeacherExistsOrNot(
+                maybeStudentTeacher, grade.StudentTeacherId);
+
+            return await this.storageBroker
+                .InsertGradeAsync(grade);
         });
 
         public ValueTask<Grade> RetrieveGradeByIdAsync(Guid gradeId) =>
@@ -35,7 +45,8 @@ namespace EKundalik.Services.Grades
             ValidateGradeId(gradeId);
 
             Grade maybeGrade =
-                await this.storageBroker.SelectGradeByIdAsync(gradeId);
+                await this.storageBroker
+                    .SelectGradeByIdAsync(gradeId);
 
             ValidateStorageGrade(maybeGrade, gradeId);
 
@@ -51,11 +62,21 @@ namespace EKundalik.Services.Grades
             ValidateGradeOnModify(grade);
 
             Grade maybeGrade =
-                await this.storageBroker.SelectGradeByIdAsync(grade.Id);
+                await this.storageBroker
+                    .SelectGradeByIdAsync(grade.Id);
 
-            // tekshirish add kabi
+            ValidateStorageGrade(maybeGrade, grade.Id);
 
-            return await this.storageBroker.UpdateGradeAsync(grade);
+            StudentTeacher maybeStudentTeacher =
+                await this.storageBroker
+                    .SelectStudentTeacherByIdAsync(
+                        grade.StudentTeacherId);
+
+            ValidateStudentTeacherExistsOrNot(
+                maybeStudentTeacher, grade.StudentTeacherId);
+
+            return await this.storageBroker
+                .UpdateGradeAsync(grade);
         });
 
         public ValueTask<Grade> RemoveGradeByIdAsync(Guid gradeId) =>

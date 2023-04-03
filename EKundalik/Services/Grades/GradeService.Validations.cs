@@ -66,11 +66,11 @@ namespace EKundalik.Services.Grades
             }
         }
 
-        private static void ValidateStorageStudentTeacherIsExists(StudentTeacher maybeStudentTeacher, Guid id)
+        private static void ValidateStudentTeacherExistsOrNot(StudentTeacher maybeStudentTeacher, Guid id)
         {
             if(maybeStudentTeacher is null)
             {
-                throw new NotFoundStudentTeacher(id);
+                throw new NotFoundStudentTeacherException(id);
             }
         }
 

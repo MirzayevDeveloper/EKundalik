@@ -56,6 +56,8 @@ namespace EKundalik
                         {
                             var studentTeacherLayer =
                                 new StudentTeacherLayer(storageBroker);
+
+                            studentTeacherLayer.StudentTeacherCase().Wait();
                         }
                         break;
                     case 4:
@@ -70,6 +72,8 @@ namespace EKundalik
                         {
                             var gradeLayer =
                                 new GradeLayer(storageBroker);
+
+                            gradeLayer.GradeCase().Wait();
                         }
                         break;
                     case 6:

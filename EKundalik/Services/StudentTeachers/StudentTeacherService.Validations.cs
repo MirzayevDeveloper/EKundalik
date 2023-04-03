@@ -52,19 +52,11 @@ namespace EKundalik.Services.StudentTeachers
             invalidStudentTeacherException.ThrowIfContainsErrors();
         }
 
-        private static void ValidateStorageStudentTeacher(StudentTeacher maybeStudentTeacher, string userName)
+        private static void ValidateStorageStudentTeacher(StudentTeacher maybeStudentTeacher, Guid id)
         {
             if (maybeStudentTeacher is null)
             {
-                throw new NotFoundStudentTeacherException(userName);
-            }
-        }
-
-        private static void ValidateStorageStudentTeacher(StudentTeacher maybeStudentTeacher, Guid userId)
-        {
-            if (maybeStudentTeacher is null)
-            {
-                throw new NotFoundStudentTeacherException(userId);
+                throw new NotFoundStudentTeacherException(id);
             }
         }
 
@@ -74,13 +66,6 @@ namespace EKundalik.Services.StudentTeachers
             {
                 throw new NullStudentTeacherException();
             }
-        }
-
-        private static void ValidateStudentTeacherUserName(string userName)
-        {
-            Validate(
-
-                );
         }
 
         private static void ValidateStudentTeacherId(Guid id)

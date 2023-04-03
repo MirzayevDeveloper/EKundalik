@@ -12,7 +12,7 @@ namespace EKundalik.Services.StudentTeachers
     public interface IStudentTeacherService
     {
         ValueTask<StudentTeacher> AddStudentTeacherAsync(StudentTeacher studentTeacher);
-        ValueTask<StudentTeacher> RetrieveStudentTeacherAsync(Guid studentTeacherId);
+        ValueTask<StudentTeacher> RetrieveStudentTeacheryIdAsync(Guid studentTeacherId);
         IQueryable<StudentTeacher> RetrieveAllStudentTeachers();
         ValueTask<StudentTeacher> ModifyStudentTeacherAsync(StudentTeacher studentTeacher);
         ValueTask<StudentTeacher> RemoveStudentTeacherByIdAsync(Guid studentTeacherId);
