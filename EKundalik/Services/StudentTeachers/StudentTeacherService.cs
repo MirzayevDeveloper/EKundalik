@@ -25,7 +25,7 @@ namespace EKundalik.Services.StudentTeachers
             return await this.storageBroker.InsertStudentTeacherAsync(studentTeacher);
         });
 
-        public ValueTask<StudentTeacher> RetrieveStudentTeacheryIdAsync(Guid studentTeacherId) =>
+        public ValueTask<StudentTeacher> RetrieveStudentTeacherIdAsync(Guid studentTeacherId) =>
         TryCatch(async () =>
         {
             ValidateStudentTeacherId(studentTeacherId);

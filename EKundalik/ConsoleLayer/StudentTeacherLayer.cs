@@ -8,8 +8,14 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EKundalik.Brokers.Storages;
+using EKundalik.Models.Students;
 using EKundalik.Models.StudentTeachers;
+using EKundalik.Models.Subjects;
+using EKundalik.Models.Teachers;
+using EKundalik.Services.Students;
 using EKundalik.Services.StudentTeachers;
+using EKundalik.Services.Subjects;
+using EKundalik.Services.Teachers;
 using Newtonsoft.Json;
 
 namespace EKundalik.ConsoleLayer
@@ -17,9 +23,25 @@ namespace EKundalik.ConsoleLayer
     public class StudentTeacherLayer
     {
         private readonly IStudentTeacherService studentTeacherService;
+        private readonly IStudentService studentService;
+        private readonly ITeacherService teacherService;
+        private readonly ISubjectService subjectService;
 
-        public StudentTeacherLayer(IStorageBroker storageBroker) =>
-            this.studentTeacherService = new StudentTeacherService(storageBroker);
+        public StudentTeacherLayer(
+            IStorageBroker storageBroker)
+        {
+            this.studentTeacherService = 
+                new StudentTeacherService(storageBroker);
+
+            this.studentService = 
+                new StudentService(storageBroker);
+
+            this.teacherService = 
+                new TeacherService(storageBroker);
+
+            this.subjectService = 
+                new SubjectService(storageBroker);
+        }
 
         public async Task StudentTeacherCase()
         {
@@ -187,7 +209,23 @@ namespace EKundalik.ConsoleLayer
 
             StudentTeacher maybeStudentTeacher =
                 await this.studentTeacherService
-                    .RetrieveStudentTeacheryIdAsync(studentTeacherId);
+                    .RetrieveStudentTeacherIdAsync(studentTeacherId);
+
+            if (maybeStudentTeacher != null)
+            {
+                Student student = await this.studentService
+                    .RetrieveStudentByIdAsync(maybeStudentTeacher.StudentId);
+
+                Teacher teacher = await this.teacherService
+                    .RetrieveTeacherByIdAsync(maybeStudentTeacher.TeacherId);
+
+                Subject subject = await this.subjectService
+                    .RetrieveSubjectByIdAsync(maybeStudentTeacher.SubjectId);
+
+                General.PrintObjectProperties(student);
+                General.PrintObjectProperties(teacher);
+                General.PrintObjectProperties(subject);
+            }
 
             General.PrintObjectProperties(maybeStudentTeacher);
 
@@ -227,12 +265,12 @@ namespace EKundalik.ConsoleLayer
             Console.Write("enter TeacherId: ");
             string teacherId = Console.ReadLine();
             Guid id2;
-            Guid.TryParse(studentId, out id2);
+            Guid.TryParse(teacherId, out id2);
 
             Console.Write("enter SubjectId: ");
             string subjectId = Console.ReadLine();
             Guid id3;
-            Guid.TryParse(studentId, out id3);
+            Guid.TryParse(subjectId, out id3);
 
             var StudentTeacher = new StudentTeacher()
             {
