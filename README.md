@@ -1,2 +1,1 @@
-# EKundalik
-#Build by The-Standard
+#The-Standard Architecture
