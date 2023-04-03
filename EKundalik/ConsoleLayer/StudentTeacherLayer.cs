@@ -105,7 +105,7 @@ namespace EKundalik.ConsoleLayer
             while (isActive && studentTeacher != null)
             {
                 if (ReadFromFile().Id != default)
-                {
+                { 
                     Console.Clear();
                     General.PrintObjectProperties(studentTeacher);
 

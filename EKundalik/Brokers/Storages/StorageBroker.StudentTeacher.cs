@@ -6,6 +6,9 @@ using EKundalik.Models.StudentTeachers;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using EKundalik.Models.Students;
+using EKundalik.Models.Teachers;
+using EKundalik.Models.Subjects;
 
 namespace EKundalik.Brokers.Storages
 {
@@ -17,7 +20,23 @@ namespace EKundalik.Brokers.Storages
             string columns = "id, studentid, teacherid, subjectid";
             string values = "@Id, @StudentId, @TeacherId, @SubjectId";
 
-            return await this.InsertAsync(studentTeacher, studentTeacherTabel, (columns, values));
+            var @object = new 
+            { 
+                studentTeacher.Id,
+                studentTeacher.StudentId,
+                studentTeacher.TeacherId,
+                studentTeacher.SubjectId
+            };
+
+            var studentTeacher1 =  await this.InsertAsync(@object, studentTeacherTabel, (columns, values));
+
+            return new StudentTeacher()
+            {
+                Id = studentTeacher1.Id,
+                StudentId = studentTeacher1.StudentId,
+                TeacherId = studentTeacher1.TeacherId,
+                SubjectId = studentTeacher1.SubjectId
+            };
         }
 
         public async ValueTask<StudentTeacher> SelectStudentTeacherByIdAsync(Guid id) =>
